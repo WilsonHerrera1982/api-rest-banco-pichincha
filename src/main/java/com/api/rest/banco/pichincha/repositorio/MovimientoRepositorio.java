@@ -18,8 +18,8 @@ public interface MovimientoRepositorio extends JpaRepository<Movimiento, UUID> {
 
 	@Query("SELECT m FROM Movimiento m join m.cuenta c join c.cliente cl join cl.persona p "
 			+ " WHERE p.identificacion=:identificacion "
-			+ " and (cast(m.fecha as string) between coalesce(cast(:initDate as string), cast(m.fecha as string)) "
-			+ " and coalesce(cast(:endDate as string), cast(m.fecha as string))) ORDER BY m.fecha DESC ")
-	List<Movimiento> reporte(@Param("identificacion") String identificacion,
-			@Param("initDate") Date initDate, @Param("endDate") Date endDate);
+			+ " and (cast(m.fecha as string) between coalesce(cast(:fechaInicio as string), cast(m.fecha as string)) "
+			+ " and coalesce(cast(:fechaFin as string), cast(m.fecha as string))) ORDER BY m.fecha DESC ")
+	List<Movimiento> reporte(@Param("identificacion") String identificacion, @Param("fechaInicio") Date fechaInicio,
+			@Param("fechaFin") Date fechaFin);
 }

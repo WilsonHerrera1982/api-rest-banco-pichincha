@@ -12,10 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.api.rest.banco.pichincha.dto.MovimientoDto;
-import com.api.rest.banco.pichincha.entidad.Cliente;
 import com.api.rest.banco.pichincha.entidad.Cuenta;
 import com.api.rest.banco.pichincha.entidad.Movimiento;
-import com.api.rest.banco.pichincha.entidad.Persona;
 import com.api.rest.banco.pichincha.repositorio.CuentaRepositorio;
 import com.api.rest.banco.pichincha.repositorio.MovimientoRepositorio;
 
@@ -42,6 +40,8 @@ public class MovimientoServicio {
 				movimiento2.setValor(movimiento.getValor());
 				movimientoRepositorio.save(movimiento2);
 				mensaje = "Registro guardardo con exito";
+			}else {
+				mensaje = "Saldo Insuficiente";
 			}
 		} else {
 			List<Movimiento> lista = listaMov.stream().filter(mov -> mov.getFecha().equals(movimiento.getFecha()))
@@ -55,7 +55,8 @@ public class MovimientoServicio {
 			movimiento2.setTipoMovimiento(movimiento.getTipoMovimiento());
 			if (movimiento.getTipoMovimiento().equals("Retiro")) {
 				double suma = listaMov.stream().mapToDouble(m -> m.getValor().doubleValue()).sum();
-				if (BigDecimal.valueOf(suma).compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) == 0) {
+				if (movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) == 0 || 
+						movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) < 0) {
 					mensaje = "Limite diario de retiro exedido";
 					return null;
 				} else if (ordenar.get(0).getSaldo().compareTo(movimiento.getValor()) < 0) {
