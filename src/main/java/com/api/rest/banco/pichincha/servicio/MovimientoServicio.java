@@ -56,7 +56,7 @@ public class MovimientoServicio {
 			if (movimiento.getTipoMovimiento().equals("Retiro")) {
 				double suma = listaMov.stream().mapToDouble(m -> m.getValor().doubleValue()).sum();
 				if (movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) == 0 || 
-						movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) < 0) {
+						movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) > 0) {
 					mensaje = "Limite diario de retiro exedido";
 					return null;
 				} else if (ordenar.get(0).getSaldo().compareTo(movimiento.getValor()) < 0) {
