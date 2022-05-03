@@ -83,4 +83,8 @@ public class MovimientoServicio {
 
 		return movimientoRepositorio.reporte(identificacion, fechaInicio, fechaFin);
 	}
+	
+	public void guardarMovimiento(Movimiento mov) {
+		movimientoRepositorio.save(mov);
+	}
 }
