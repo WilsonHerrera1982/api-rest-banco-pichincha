@@ -54,6 +54,7 @@ public class MovimientoControlador {
 			movi.setSaldo(mov.getSaldo().toString());
 			movi.setSaldoInicial(mov.getSaldo().toString());
 			movi.setTipo(mov.getTipoMovimiento());
+			listaRetorno.add(movi);
 		}
 		return listaRetorno;
 	}
