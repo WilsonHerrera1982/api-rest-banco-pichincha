@@ -30,10 +30,10 @@ public class CuentaControlador {
 	private ResponseEntity guardar(@RequestBody CuentaDto cuenta) {
 		Movimiento mov = new Movimiento();
 		Cuenta cuen = new Cuenta();
-		ResponseEntity responseEntity = new ResponseEntity<>(null);
+
 		UUID uuid = UUID.randomUUID();
 		try {
-			responseEntity = cuentaServicio.guardar(cuenta);
+			ResponseEntity responseEntity = cuentaServicio.guardar(cuenta);
 			cuen = cuentaServicio.obtenerXId(cuenta.getNumeroCuenta());
 			mov.setMovimientoId(uuid);
 			mov.setCuenta(cuen);
@@ -42,11 +42,10 @@ public class CuentaControlador {
 			mov.setTipoMovimiento("Deposito");
 			mov.setValor(cuenta.getSaldoInicial());
 			movimientoServicio.guardarMovimiento(mov);
-
+			return responseEntity;
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
-		return responseEntity;
 
 	}
 
