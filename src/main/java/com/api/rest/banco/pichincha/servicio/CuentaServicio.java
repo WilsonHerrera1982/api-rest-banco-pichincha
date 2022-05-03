@@ -52,4 +52,8 @@ public class CuentaServicio {
 		return ResponseEntity.ok(mensaje);
 
 	}
+	
+	public Cuenta obtenerXId(String numero) {
+		return cuentaRepositorio.findByNumeroCuenta(numero).orElse(new Cuenta());
+	}
 }
