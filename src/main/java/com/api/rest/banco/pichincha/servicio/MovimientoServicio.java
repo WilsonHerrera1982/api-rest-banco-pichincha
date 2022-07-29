@@ -17,6 +17,8 @@ import com.api.rest.banco.pichincha.entidad.Movimiento;
 import com.api.rest.banco.pichincha.repositorio.CuentaRepositorio;
 import com.api.rest.banco.pichincha.repositorio.MovimientoRepositorio;
 
+import ch.qos.logback.classic.Logger;
+
 @Service
 public class MovimientoServicio {
 
@@ -29,6 +31,9 @@ public class MovimientoServicio {
 		Optional<Cuenta> cuenta = cuentaRepositorio.findByNumeroCuenta(movimiento.getCuenta());
 		String mensaje = "";
 		List<Movimiento> listaMov = movimientoRepositorio.listaMovimientos(cuenta.get().getNumeroCuenta());
+		if(movimiento.getFecha() == null){
+			movimiento.setFecha(new Date());
+		}
 		if (listaMov.isEmpty()) {
 			if (!movimiento.getTipoMovimiento().equals("Retiro")) {
 				Movimiento movimiento2 = new Movimiento();
@@ -40,8 +45,9 @@ public class MovimientoServicio {
 				movimiento2.setValor(movimiento.getValor());
 				movimientoRepositorio.save(movimiento2);
 				mensaje = "Registro guardardo con exito";
-			}else {
+			}else {				 
 				mensaje = "Saldo Insuficiente";
+			
 			}
 		} else {
 			List<Movimiento> lista = listaMov.stream().filter(mov -> mov.getFecha().equals(movimiento.getFecha()))
@@ -56,12 +62,12 @@ public class MovimientoServicio {
 			if (movimiento.getTipoMovimiento().equals("Retiro")) {
 				double suma = listaMov.stream().mapToDouble(m -> m.getValor().doubleValue()).sum();
 				if (movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) == 0 || 
-						movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) < 0) {
+						BigDecimal.valueOf(suma).compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) > 0) {
 					mensaje = "Limite diario de retiro exedido";
-					return null;
+					return ResponseEntity.ok(mensaje);
 				} else if (ordenar.get(0).getSaldo().compareTo(movimiento.getValor()) < 0) {
 					mensaje = "Saldo no disponible";
-					return null;
+					return ResponseEntity.ok(mensaje);
 				} else {
 					movimiento2.setValor(movimiento.getValor().negate());
 					movimiento2.setSaldo(ordenar.get(0).getSaldo().subtract(movimiento.getValor()));
@@ -76,6 +82,7 @@ public class MovimientoServicio {
 				mensaje = "Registro guardardo con exito";
 			}
 		}
+		
 		return ResponseEntity.ok(mensaje);
 	}
 

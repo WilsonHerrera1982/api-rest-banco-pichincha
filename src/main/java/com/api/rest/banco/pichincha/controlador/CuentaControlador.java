@@ -2,6 +2,8 @@ package com.api.rest.banco.pichincha.controlador;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,9 +32,14 @@ public class CuentaControlador {
 	private ResponseEntity guardar(@RequestBody CuentaDto cuenta) {
 		Movimiento mov = new Movimiento();
 		Cuenta cuen = new Cuenta();
-		ResponseEntity responseEntity = new ResponseEntity<>(null);
+		ResponseEntity responseEntity =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		UUID uuid = UUID.randomUUID();
 		try {
+			if(cuenta.getCliente().trim().equals("") || cuenta.getNumeroCuenta().trim().equals("") || cuenta.getLimiteDiario().equals("")
+					|| cuenta.getSaldoInicial().equals("")) {
+				String mensaje = "Revise la información ingresada";
+				throw new Exception(mensaje);
+			}
 			responseEntity = cuentaServicio.guardar(cuenta);
 			cuen = cuentaServicio.obtenerXId(cuenta.getNumeroCuenta());
 			mov.setMovimientoId(uuid);
@@ -44,7 +51,7 @@ public class CuentaControlador {
 			movimientoServicio.guardarMovimiento(mov);
 
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+				Logger.getLogger(CuentaControlador.class.getName()).log(Level.WARNING,null,e);		
 		}
 		return responseEntity;
 

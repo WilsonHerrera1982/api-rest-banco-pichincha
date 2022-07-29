@@ -13,6 +13,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -34,6 +36,7 @@ public class Cliente {
 	private boolean estado;
 	@MapsId
     @JoinColumn(name = "cliente_id")
+	@JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     private Persona persona;
 	

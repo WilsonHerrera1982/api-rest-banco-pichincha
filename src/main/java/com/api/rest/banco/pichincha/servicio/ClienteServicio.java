@@ -1,6 +1,6 @@
 package com.api.rest.banco.pichincha.servicio;
 
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class ClienteServicio {
 	public ResponseEntity guardar(Cliente cliente) {
 		String mensaje = "";
 		Persona persona1 = personaRepositorio.findByIdentificacion(cliente.getPersona().getIdentificacion())
-				.orElse(new Persona());
+				.orElse(cliente.getPersona());
 		if (persona1.getPersonaId() != null) {
 			cliente = new Cliente();
 
@@ -32,6 +32,7 @@ public class ClienteServicio {
 			clienteRepositorio.save(cliente);
 			mensaje = "Registro almacenado correctamente";
 		}
+		
 		return ResponseEntity.ok(mensaje);
 
 	}
