@@ -27,13 +27,13 @@ public class MovimientoControlador {
 	private MovimientoServicio movimientoServicio;
 
 	@PostMapping("/guardar")
-	private ResponseEntity guardar(@RequestBody MovimientoDto movimientoDto) {
+	private ResponseEntity<MovimientoDto> guardar(@RequestBody MovimientoDto movimientoDto) {
 
 		ResponseEntity responseEntity = movimientoServicio.guardar(movimientoDto);
 		try {
 
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.ok().body(movimientoDto);
 		}
 		return responseEntity;
 

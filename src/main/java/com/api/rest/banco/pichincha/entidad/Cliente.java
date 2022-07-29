@@ -30,7 +30,6 @@ public class Cliente {
 	@Column(name = "clave")
 	private String clave;
 	@Column(name = "estado")
-	@Getter
 	private boolean estado;
 	@MapsId
     @JoinColumn(name = "cliente_id")

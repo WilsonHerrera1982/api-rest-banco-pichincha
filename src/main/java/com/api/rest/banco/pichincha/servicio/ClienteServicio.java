@@ -19,16 +19,18 @@ public class ClienteServicio {
 	@Autowired
 	private PersonaRepositorio personaRepositorio;
 
-	public ResponseEntity guardar(Cliente cliente) {
+	public ResponseEntity guardar(Cliente cliente, Persona persona) {
 		String mensaje = "";
-		Persona persona1 = personaRepositorio.findByIdentificacion(cliente.getPersona().getIdentificacion())
-				.orElse(new Persona());
+		Persona persona1 = personaRepositorio.findByIdentificacion(persona.getIdentificacion()).orElse(new Persona());
 		if (persona1.getPersonaId() != null) {
 			cliente = new Cliente();
 
 			mensaje = "Cliente con esta identificacion ya existe!";
 
 		} else {
+			personaRepositorio.save(persona);
+			Optional<Persona> persona2 = personaRepositorio.findByIdentificacion(persona.getIdentificacion());
+			cliente.setPersona(persona2.get());
 			clienteRepositorio.save(cliente);
 			mensaje = "Registro almacenado correctamente";
 		}
@@ -36,5 +38,4 @@ public class ClienteServicio {
 
 	}
 
-	
 }
