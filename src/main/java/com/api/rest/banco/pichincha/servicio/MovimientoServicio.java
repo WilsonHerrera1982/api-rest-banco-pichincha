@@ -57,7 +57,18 @@ public class MovimientoServicio {
 			movimiento2.setTipoMovimiento(movimiento.getTipoMovimiento());
 			if (movimiento.getTipoMovimiento().equals("Retiro")) {
 				double suma = listaMov.stream().mapToDouble(m -> m.getValor().doubleValue()).sum();
+<<<<<<< HEAD
 				if (maximoDiarioRetiro.compareTo(BigDecimal.ZERO) == 0) {
+=======
+				if (movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) == 0 || 
+						movimiento.getValor().compareTo(listaMov.get(0).getCuenta().getLimiteDiario()) > 0) {
+					mensaje = "Limite diario de retiro exedido";
+					return null;
+				} else if (ordenar.get(0).getSaldo().compareTo(movimiento.getValor()) < 0) {
+					mensaje = "Saldo no disponible";
+					return null;
+				} else {
+>>>>>>> 8a495725aa48a21fe89bbc3e53e9782cb8edbd49
 					movimiento2.setValor(movimiento.getValor().negate());
 					movimiento2.setSaldo(ordenar.get(0).getSaldo().subtract(movimiento.getValor()));
 					movimientoRepositorio.save(movimiento2);
