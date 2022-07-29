@@ -22,7 +22,7 @@ public class CuentaServicio {
 	private PersonaServicio personaServicio;
 	@Autowired
 	private ClienteRepositorio clienteRepositorio;
-
+	
 	public ResponseEntity guardar(CuentaDto cuenta) {
 		String mensaje = "";
 		Optional<Persona> persona = personaServicio.obtenerXIdentificacion(cuenta.getCliente());

@@ -24,12 +24,14 @@ public class PersonaServicio {
 		return personaRepositorio.findAll();
 	}
 
-	public void eliminar(Persona persona) {
-		personaRepositorio.delete(persona);
+	public void eliminar(String identificacion) {
+		Optional<Persona> persona =personaRepositorio.findByIdentificacion(identificacion);
+		persona.get().getCliente().setEstado(false);
+		personaRepositorio.save(persona.get());
 	}
 
-	public Optional<Persona> obtenerXId(Long id) {
-		return personaRepositorio.findById(id);
+	public Optional<Persona> obtenerXId(String id) {
+		return personaRepositorio.findByIdentificacion(id);
 	}
 
 	public Optional<Persona> obtenerXIdentificacion(String id) {
