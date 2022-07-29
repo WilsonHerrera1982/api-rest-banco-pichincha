@@ -1,6 +1,6 @@
 package com.api.rest.banco.pichincha.servicio;
 
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +19,23 @@ public class ClienteServicio {
 	@Autowired
 	private PersonaRepositorio personaRepositorio;
 
-	public ResponseEntity guardar(Cliente cliente, Persona persona) {
+	public ResponseEntity guardar(Cliente cliente) {
 		String mensaje = "";
-		Persona persona1 = personaRepositorio.findByIdentificacion(persona.getIdentificacion()).orElse(new Persona());
+		Persona persona1 = personaRepositorio.findByIdentificacion(cliente.getPersona().getIdentificacion())
+				.orElse(cliente.getPersona());
 		if (persona1.getPersonaId() != null) {
 			cliente = new Cliente();
 
 			mensaje = "Cliente con esta identificacion ya existe!";
 
 		} else {
-			personaRepositorio.save(persona);
-			Optional<Persona> persona2 = personaRepositorio.findByIdentificacion(persona.getIdentificacion());
-			cliente.setPersona(persona2.get());
 			clienteRepositorio.save(cliente);
 			mensaje = "Registro almacenado correctamente";
 		}
+		
 		return ResponseEntity.ok(mensaje);
 
 	}
 
+	
 }

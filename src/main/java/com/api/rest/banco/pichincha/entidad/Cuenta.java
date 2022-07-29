@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -38,6 +40,7 @@ public class Cuenta {
     @Column(name = "limite_diario")
     private BigDecimal limiteDiario;
     @JoinColumn(name = "cliente_id")
+    @JsonIgnore
     @ManyToOne
     private Cliente cliente;
     

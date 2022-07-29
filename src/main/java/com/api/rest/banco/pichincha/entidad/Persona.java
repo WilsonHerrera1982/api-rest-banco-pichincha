@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -40,6 +42,7 @@ public class Persona {
 
 	@Column(name = "direccion")
 	private String direccion;
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
 	private Cliente cliente;
 

@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -37,6 +39,7 @@ public class Movimiento {
 	@Column(name = "saldo")
 	private BigDecimal saldo;
 	@JoinColumn(name = "cuenta_id")
+	@JsonIgnore
 	@ManyToOne
 	private Cuenta cuenta;
 	public UUID getMovimientoId() {
